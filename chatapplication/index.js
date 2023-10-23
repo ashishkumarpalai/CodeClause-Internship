@@ -1,47 +1,43 @@
-const express = require("express")
-
-const path = require('path')
-const app=express();
-
-const server = app.listen(4040,()=>
-console.log("server is running on port 4040"))
+const express = require("express");
+const app = express();
+const { Server } = require("socket.io");
 
 
 
-const io = require("socket.io")(server)
-
-app.use(express.static(path.join(__dirname, 'public')))
-
-io.on("connection",onConnected)
-
-let socketsConected = new Set()
-
-function onConnected(socket){
-    console.log(socket.id);
-
-    socketsConected.add(socket.id)
-
-io.emit("clients-total",socketsConected.size)
-
-    socket.on("disconnet",()=> {
-        console.log("socket is  disconnected",socket.id);
-        socketsConected.delete(socket.id)
-        io.emit("clients-total",socketsConected.size)
-    })
-
-    socket.on('message', (data) => {
-        // console.log(data)
-        socket.broadcast.emit('chat-message', data)
-      })
-    
-      socket.on('feedback', (data) => {
-        socket.broadcast.emit('feedback', data)
-      })
-}
+const http = require("http");
+const httpServer = http.createServer(app);
+httpServer.listen(8000,()=>{
+    console.log("server is running at port 8000")
+});
 
 
 
 
+const io = new Server(httpServer);
+
+const users = {};
+var count = 0;
+io.on("connection", (socket) => {
+  socket.on("new-user-joined", (name) => {
+    count+=1;
+    users[socket.id] = name;
+    socket.broadcast.emit("user-joined", name);
+    io.emit("user-online", count);
+  });
+
+  socket.on("send", (message) => {
+    socket.broadcast.emit("receive", {
+      message: message,
+      name: users[socket.id],
+    });
+  });
 
 
-
+  socket.on("disconnect", (message) => {
+    socket.broadcast.emit("leave", users[socket.id])
+    delete users[socket.id];
+    count--;
+    if(count < 0) count = 0;
+    io.emit("user-online", count);
+  });
+});
