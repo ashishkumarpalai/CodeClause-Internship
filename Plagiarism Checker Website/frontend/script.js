@@ -4,7 +4,7 @@ document.getElementById('checkButton').addEventListener('click', () => {
     const textToCheck = document.getElementById('textToCheck').value;
 
 
-    fetch('http://localhost:3000/checkPlagiarism', {
+    fetch('https://plagiarism-checker-ubev.onrender.com/checkPlagiarism', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
