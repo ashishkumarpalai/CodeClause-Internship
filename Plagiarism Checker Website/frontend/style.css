@@ -1,0 +1,55 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background-color: #00142e;
+}
+
+h1 {
+    color: #ffffff;
+}
+
+textarea {
+    width: 95%;
+    height: 20rem;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #0a0a0a;
+    font-size: 20px;
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#plagiarismResult {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+/* SweetAlert CSS */
+.swal-text {
+    font-size: 18px;
+}
+
+#container {
+    width: 80%;
+    margin: auto;
+    display: flex;
+}
+
+#container div {
+    width: 50%;
+}
